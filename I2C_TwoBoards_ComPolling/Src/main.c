@@ -95,17 +95,18 @@ int main(void)
   SystemClock_Config();
 
   /*##-1- Configure the I2C peripheral ######################################*/
-  I2cHandle.Instance             = I2Cx;
+  I2cHandle.Instance             = I2C1;
   
-  I2cHandle.Init.AddressingMode  = I2C_ADDRESSINGMODE_10BIT;
+  I2cHandle.Init.AddressingMode  = I2C_ADDRESSINGMODE_7BIT;
   I2cHandle.Init.ClockSpeed      = 400000;
   I2cHandle.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   I2cHandle.Init.DutyCycle       = I2C_DUTYCYCLE_16_9;
   I2cHandle.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
   I2cHandle.Init.NoStretchMode   = I2C_NOSTRETCH_DISABLE;
-  I2cHandle.Init.OwnAddress1     = I2C_ADDRESS;
-  I2cHandle.Init.OwnAddress2     = 0xFE;
-  
+  //I2cHandle.Init.OwnAddress1     = I2C_ADDRESS;
+  //I2cHandle.Init.OwnAddress2     = 0xFE;
+  I2cHandle.Init.OwnAddress1     = 0;
+  I2cHandle.Init.OwnAddress2     = 0;
   if(HAL_I2C_Init(&I2cHandle) != HAL_OK)
   {
     /* Initialization Error */
@@ -133,10 +134,16 @@ int main(void)
   /* While the I2C in reception process, user can transmit data through 
      "aTxBuffer" buffer */
   /* Timeout is set to 10S */
-	if (HAL_I2C_Master_Receive(&I2cHandle, I2C_ADDRESS << 1, (uint8_t *)&aRxBuffer, 2, 100) != HAL_OK)
+//	if (HAL_I2C_Master_Receive(&I2cHandle, I2C_ADDRESS << 1, (uint8_t *)&aRxBuffer, 1, 100) != HAL_OK)
+//	{
+//      Error_Handler();
+//  }
+	if(HAL_I2C_Mem_Read(&I2cHandle,(uint16_t)I2C_ADDRESS<<1, 117, I2C_MEMADD_SIZE_8BIT, &aRxBuffer[0], 1, 0) != HAL_OK)
 	{
-      Error_Handler();
-  }
+		Error_Handler();
+	}
+	/* Infinite loop */  
+  while (1);
 	#if 0
   while(HAL_I2C_Master_Transmit(&I2cHandle, (uint16_t)I2C_ADDRESS, (uint8_t*)aTxBuffer, TXBUFFERSIZE, 10000)!= HAL_OK)
   {
@@ -207,18 +214,15 @@ int main(void)
   BSP_LED_On(LED4);
   
 #endif /* MASTER_BOARD */
-  #if 0
+  #if 1
   /*##-4- Compare the sent and received buffers ##############################*/
-  if(Buffercmp((uint8_t*)aTxBuffer,(uint8_t*)aRxBuffer,RXBUFFERSIZE))
-  {
-    /* Processing Error */
-    Error_Handler();     
-  }
+//  if(Buffercmp((uint8_t*)aTxBuffer,(uint8_t*)aRxBuffer,RXBUFFERSIZE))
+//  {
+//    /* Processing Error */
+//    Error_Handler();     
+//  }
  
-  /* Infinite loop */  
-  while (1)
-  {
-  }
+  
 	#endif
 }
 
