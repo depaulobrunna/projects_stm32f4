@@ -40,6 +40,7 @@ static void Error_Handler(void)
 
 static void i2c_init(void)
 {
+	
 	I2cHandle.Instance             = I2C1;
   I2cHandle.Init.AddressingMode  = I2C_ADDRESSINGMODE_7BIT;
   I2cHandle.Init.ClockSpeed      = 400000;

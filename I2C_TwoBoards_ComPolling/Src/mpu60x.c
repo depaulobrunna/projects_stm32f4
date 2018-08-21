@@ -37,3 +37,13 @@ void mpu60x_write_register(uint8_t register_to_write, uint8_t *value_to_write)
 	mpu_set_register(register_to_write, value_to_write);
 	return;
 }
+
+
+uint8_t mpu_get_state(void)
+{
+	if(mpu_get_register(107) == 0)
+	{
+		
+	}
+
+}
