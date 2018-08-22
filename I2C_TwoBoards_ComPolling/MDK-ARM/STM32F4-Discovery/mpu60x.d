@@ -32,3 +32,4 @@ stm32f4-discovery\mpu60x.o: ..\..\..\..\..\..\Drivers\STM32F4xx_HAL_Driver\Inc\s
 stm32f4-discovery\mpu60x.o: ..\..\..\..\..\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h
 stm32f4-discovery\mpu60x.o: ..\Inc\main.h
 stm32f4-discovery\mpu60x.o: ..\..\..\..\..\..\Drivers\BSP\STM32F4-Discovery\stm32f4_discovery.h
+stm32f4-discovery\mpu60x.o: ..\Inc\mpu60x_registers.h

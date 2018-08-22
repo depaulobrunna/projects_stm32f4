@@ -1,5 +1,6 @@
 #include "mpu60x.h"
 #include "main.h"
+#include "mpu60x_registers.h"
 
 I2C_HandleTypeDef *mpu60x_i2c;
 
@@ -9,14 +10,14 @@ static void mpu_set_register(uint8_t register_to_set, uint8_t *value_to_set);
 static uint8_t mpu_get_register(uint8_t register_to_get)
 {
 	uint8_t register_get;
-	HAL_I2C_Mem_Read(mpu60x_i2c,(uint16_t)MPU60x_I2C_ADDRESS << 1, register_to_get, I2C_MEMADD_SIZE_8BIT, &register_get, 1, 100);
+	HAL_I2C_Mem_Read(mpu60x_i2c,(uint16_t)MPU60x_I2C_DEVICE_ADDRESS << 1, register_to_get, I2C_MEMADD_SIZE_8BIT, &register_get, 1, 100);
 	
 	return register_get; 
 }
 
 static void mpu_set_register(uint8_t register_to_set, uint8_t *value_to_set)
 {
-	HAL_I2C_Mem_Write(mpu60x_i2c,(uint16_t)MPU60x_I2C_ADDRESS << 1, register_to_set, I2C_MEMADD_SIZE_8BIT, value_to_set, 1, 100);
+	HAL_I2C_Mem_Write(mpu60x_i2c,(uint16_t)MPU60x_I2C_DEVICE_ADDRESS << 1, register_to_set, I2C_MEMADD_SIZE_8BIT, value_to_set, 1, 100);
 	
 	return; 
 }
@@ -39,11 +40,7 @@ void mpu60x_write_register(uint8_t register_to_write, uint8_t *value_to_write)
 }
 
 
-uint8_t mpu_get_state(void)
+MPU60x_States mpu60x_get_state(void)
 {
-	if(mpu_get_register(107) == 0)
-	{
-		
-	}
-
+	return (MPU60x_States)((mpu_get_register(MPU60x_PWR_MGMT_1_ADDR) & 0xC0) >> SLEEP_POS);
 }

@@ -15,6 +15,8 @@ static I2C_HandleTypeDef I2cHandle;
 static uint8_t aTxBuffer;
 static uint8_t aRxBuffer[REGISTERS_NUM];
 
+static MPU60x_States mpu_state;
+
 int main(void)
 {    
   HAL_Init();
@@ -24,12 +26,14 @@ int main(void)
 	mpu60x_set_i2c(&I2cHandle);
 
 	memset(&aRxBuffer[0], 0xFF, REGISTERS_NUM);
-	
+#if 0
 	for(uint32_t i=35; i <= REGISTERS_NUM; i++)
 	{
 		aRxBuffer[i] = mpu60x_read_register(i);
 	}
-	
+#endif
+	mpu_state = mpu60x_get_state();
+	aRxBuffer[0] = mpu60x_get_state();
 	while (1);
 }
 

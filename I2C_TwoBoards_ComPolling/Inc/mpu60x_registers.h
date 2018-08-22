@@ -1,0 +1,36 @@
+#ifndef __MPU60x_REGISTERS_H__
+#define __MPU60x_REGISTERS_H__
+// ADDRESSES
+#define MPU60x_I2C_DEVICE_ADDRESS        0x68
+
+#define MPU60x_WHO_AM_I_ADDR				0x75
+#define MPU60x_WHO_AM_I_EVEL				0x68
+
+#define MPU60x_PWR_MGMT_1_ADDR				0x6B
+
+
+//REGISTERS
+#define CLK_SEL_POS   			0U
+#define CLK_SEL_MASK   			(7U << CLK_SEL_POS)
+
+#define TEMP_DIS_POS   			3U
+#define TEMP_DIS_MASK   		(1U << TEMP_DIS_POS)
+#define TEMP_DIS_DISABLE		(0U << TEMP_DIS_POS)
+#define TEMP_DIS_ENABLE			(1U << TEMP_DIS_POS)
+
+#define CYCLE_POS      5U
+#define CYCLE_MASK		(1U << CYCLE_POS)
+#define CYCLE_DISABLE  (0U << CYCLE_POS)
+#define CYCLE_ENABLE  (1U << CYCLE_POS)
+
+#define SLEEP_POS   6U
+#define SLEEP_MASK   (1U << SLEEP_POS)
+#define SLEEP_DISABLE  (0U << SLEEP_POS)
+#define SLEEP_ENABLE  (1U << SLEEP_POS)
+
+#define DEVICE_RESET_POS  7U
+#define DEVICE_RESET_MASK (1U << DEVICE_RESET_POS)
+#define DEVICE_RESET_DISABLE (0U << DEVICE_RESET_POS)
+#define DEVICE_RESET_ENABLE (1U << DEVICE_RESET_POS)
+
+#endif

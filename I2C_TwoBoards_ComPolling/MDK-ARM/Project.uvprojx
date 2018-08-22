@@ -491,11 +491,6 @@
               <FileType>1</FileType>
               <FilePath>..\Src\mpu60x.c</FilePath>
             </File>
-            <File>
-              <FileName>mpu60x_registers.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\mpu60x_registers.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
