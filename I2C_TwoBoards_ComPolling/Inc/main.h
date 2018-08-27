@@ -41,6 +41,8 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4_discovery.h"
 
+#include "debug.h"
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* User can use this section to tailor I2Cx/I2Cx instance used and associated 
@@ -55,22 +57,31 @@
 #define I2Cx_RELEASE_RESET()             __HAL_RCC_I2C1_RELEASE_RESET()
 
 /* Definition for I2Cx Pins */
-#define I2Cx_SCL_PIN                    GPIO_PIN_6
+#define I2Cx_SCL_PIN                    GPIO_PIN_9
 #define I2Cx_SCL_GPIO_PORT              GPIOB
 #define I2Cx_SCL_AF                     GPIO_AF4_I2C1
-#define I2Cx_SDA_PIN                    GPIO_PIN_9
+#define I2Cx_SDA_PIN                    GPIO_PIN_6
 #define I2Cx_SDA_GPIO_PORT              GPIOB
 #define I2Cx_SDA_AF                     GPIO_AF4_I2C1
+/* Definition for UART clock resources */
+#define USARTx                           USART2
+#define USARTx_CLK_ENABLE()              __HAL_RCC_USART2_CLK_ENABLE();
+#define USARTx_RX_GPIO_CLK_ENABLE()      __HAL_RCC_GPIOA_CLK_ENABLE()
+#define USARTx_TX_GPIO_CLK_ENABLE()      __HAL_RCC_GPIOA_CLK_ENABLE() 
 
-/* Size of Transmission buffer */
-#define TXBUFFERSIZE                      (COUNTOF(aTxBuffer) - 1)
-/* Size of Reception buffer */
-#define RXBUFFERSIZE                      TXBUFFERSIZE
-  
-/* Exported macro ------------------------------------------------------------*/
-#define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
-/* Exported functions ------------------------------------------------------- */
+#define USARTx_FORCE_RESET()             __HAL_RCC_USART2_FORCE_RESET()
+#define USARTx_RELEASE_RESET()           __HAL_RCC_USART2_RELEASE_RESET()
 
+/* Definition for USARTx Pins */
+#define USARTx_TX_PIN                    GPIO_PIN_2
+#define USARTx_TX_GPIO_PORT              GPIOA  
+#define USARTx_TX_AF                     GPIO_AF7_USART2
+#define USARTx_RX_PIN                    GPIO_PIN_3
+#define USARTx_RX_GPIO_PORT              GPIOA 
+#define USARTx_RX_AF                     GPIO_AF7_USART2
+
+
+extern const char* const hal_status_table[];
 #endif /* __MAIN_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,40 +1,64 @@
 #include "main.h"
+
+#include "tick.h"
 #include "mpu60x.h"
+#include "mpu60x_registers.h"
 #include "string.h"
 
-#define MASTER_BOARD
-
 #define REGISTERS_NUM        118
-
+	
 static void SystemClock_Config(void);
 static void Error_Handler(void);
 
 static void i2c_init(void);
+static void get_all_registers(uint8_t *vector);
+
+const char* const hal_status_table[] = {"OK", "ERROR", "BUSY", "TIMEOUT"};
 
 static I2C_HandleTypeDef I2cHandle;
+static MPU60x_States mpu_state;
+static MPU60x_Available mpu_available;
+
+static float test;
 static uint8_t aTxBuffer;
 static uint8_t aRxBuffer[REGISTERS_NUM];
+static uint8_t all[REGISTERS_NUM];
 
-static MPU60x_States mpu_state;
+static uint8_t sample_rate_div = 0xFF;
+static uint8_t dlpf = 0x01;
 
 int main(void)
 {    
   HAL_Init();
 	SystemClock_Config();
 	
-	i2c_init();
+	debug_init();
+	i2c_init();	
 	mpu60x_set_i2c(&I2cHandle);
-
+	
 	memset(&aRxBuffer[0], 0xFF, REGISTERS_NUM);
-#if 0
-	for(uint32_t i=35; i <= REGISTERS_NUM; i++)
-	{
-		aRxBuffer[i] = mpu60x_read_register(i);
+	memset(&all[0], 0xFF, REGISTERS_NUM);
+	
+	mpu60x_available();
+	mpu60x_wake();
+	mpu60x_temperature_sensor_enable();
+	mpu60x_set_sample_rate(sample_rate_div, dlpf);
+	
+	while (1)
+	{ 
+		test = mpu60x_get_temperature();
+		PRINTS("temperature: %4.2f.\n", test);
+		HAL_Delay(1000);
 	}
-#endif
-	mpu_state = mpu60x_get_state();
-	aRxBuffer[0] = mpu60x_get_state();
-	while (1);
+}
+
+static void get_all_registers(uint8_t *vector)
+{
+	for(uint8_t i = 0; i <= REGISTERS_NUM; i++)
+	{
+		PRINTS("Getting register %d: ", i);
+		vector[i] = mpu60x_read_register(i);
+	}
 }
 
 static void Error_Handler(void)
@@ -44,6 +68,7 @@ static void Error_Handler(void)
 
 static void i2c_init(void)
 {
+	HAL_StatusTypeDef status;
 	
 	I2cHandle.Instance             = I2C1;
   I2cHandle.Init.AddressingMode  = I2C_ADDRESSINGMODE_7BIT;
@@ -54,11 +79,13 @@ static void i2c_init(void)
   I2cHandle.Init.NoStretchMode   = I2C_NOSTRETCH_DISABLE;
   I2cHandle.Init.OwnAddress1     = 0;
   I2cHandle.Init.OwnAddress2     = 0;
+  
+	status = HAL_I2C_Init(&I2cHandle);
+
+	PRINTS("HAL status: %s, in file %s at function %s() in line %i.\n",
+			hal_status_table[status], __FILE__, __FUNCTION__, __LINE__);
 	
-  if(HAL_I2C_Init(&I2cHandle) != HAL_OK)
-  {
-    Error_Handler();    
-  }
+	return;
 }
 
 static void SystemClock_Config(void)
@@ -91,6 +118,7 @@ static void SystemClock_Config(void)
     __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
   }
 }
+
 void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle)
 {
   /* Turn LED5 on: Transfer error in reception/transmission process */
