@@ -9,13 +9,15 @@
 #define DEBUG_MPU(...)
 #endif
 #define CONST_TEMP 125.0f/65535.0f
+
+const char* const mpu_available_table[] = {"Not available", "available"};
+
 static I2C_HandleTypeDef *mpu60x_i2c;
 
 static uint8_t mpu60x_get_register(uint8_t register_to_get);
 static void mpu60x_set_register(uint8_t register_to_set, uint8_t *value_to_set);
 
-uint8_t temp[2];
-uint16_t temperature;
+
 
 static uint8_t mpu60x_get_register(uint8_t register_to_get)
 {
@@ -119,11 +121,16 @@ void mpu60x_temperature_disable(void)
 
 float mpu60x_get_temperature(void)
 {
-	temp[0] = mpu60x_read_register(MPU60x_TEMP_OUT_H_ADDR);
-	temp[1] = mpu60x_read_register(MPU60x_TEMP_OUT_L_ADDR);
-	temperature = ((uint8_t)temp[0] << 8)|temp[1];
+	uint8_t temp[2];
+	uint16_t temperature;
+	
+	temp[0] = mpu60x_read_register(MPU60x_TEMP_OUT_L_ADDR);
+	temp[1] = mpu60x_read_register(MPU60x_TEMP_OUT_H_ADDR);
+	temperature = (temp[1] << 8)|temp[0];
 #if 1
-	return ((float)temperature-(521.0f)/340.0f);
+	//return (((float)temperature-(521.0f))/340.0f);
+	//return ((float)temperature/340.0f) + 36.53f; 
+	return ((125.0f / 65535.0f) * (float)temperature) - 40.0f;
 #else
 	return (CONST_TEMP*((float)temperature)-40.0f);
 #endif
@@ -131,12 +138,16 @@ float mpu60x_get_temperature(void)
 
 MPU60x_Available mpu60x_available(void)
 {
+	MPU60x_Available status;
+	
 	if (HAL_I2C_IsDeviceReady(mpu60x_i2c, (uint16_t)MPU60x_I2C_DEVICE_ADDRESS << 1, 1, 10) != HAL_OK)
 	{
-		return MPU60x_NOT_AVAILABLE;
+		status = MPU60x_NOT_AVAILABLE;
 	}
 	else
 	{
-		return MPU60x_AVAILABLE;
+		status = MPU60x_AVAILABLE;
 	}
+	DEBUG_MPU("MPU: %s.\n", mpu_available_table[status]);
+	return status;
 }	
