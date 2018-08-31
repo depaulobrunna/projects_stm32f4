@@ -48,7 +48,7 @@ int main(void)
 	{ 
 		//test = (((0.56f) * mpu60x_get_temperature()) - 17.78f);
 		//test = mpu60x_get_temperature();
-		test = 0.56f * (mpu60x_get_temperature() - 32.0f);
+		test = mpu60x_get_temperature();
 		PRINTS("temperature: %4.2f.\n", test);
 		HAL_Delay(1000);
 	}

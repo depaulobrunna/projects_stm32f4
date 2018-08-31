@@ -127,13 +127,8 @@ float mpu60x_get_temperature(void)
 	temp[0] = mpu60x_read_register(MPU60x_TEMP_OUT_L_ADDR);
 	temp[1] = mpu60x_read_register(MPU60x_TEMP_OUT_H_ADDR);
 	temperature = (temp[1] << 8)|temp[0];
-#if 1
-	//return (((float)temperature-(521.0f))/340.0f);
-	//return ((float)temperature/340.0f) + 36.53f; 
-	return ((125.0f / 65535.0f) * (float)temperature) - 40.0f;
-#else
-	return (CONST_TEMP*((float)temperature)-40.0f);
-#endif
+	
+	return (5.0f / 9.0f) * ((((125.0f / 65535.0f) * (float)temperature) - 40.0f) - 32.0f);
 }
 
 MPU60x_Available mpu60x_available(void)
