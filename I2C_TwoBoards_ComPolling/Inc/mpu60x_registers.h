@@ -101,10 +101,13 @@
 //MPU60x_GYRO_CONFIG
 #define FS_SEL_POS                       3U
 #define FS_SEL_MASK                      (3U << FS_SEL_POS)
+
 #define ZG_ST_POS                        5U
 #define ZG_ST_MASK                       (1U << ZG_ST_POS)
+
 #define YG_ST_POS                        6U
 #define YG_ST_MASK                       (1U << YG_ST_POS)
+
 #define XG_ST_POS                        7U
 #define XG_ST_MASK                       (1U << XG_ST_POS)
 

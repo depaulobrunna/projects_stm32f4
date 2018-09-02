@@ -17,8 +17,6 @@ static I2C_HandleTypeDef *mpu60x_i2c;
 static uint8_t mpu60x_get_register(uint8_t register_to_get);
 static void mpu60x_set_register(uint8_t register_to_set, uint8_t *value_to_set);
 
-
-
 static uint8_t mpu60x_get_register(uint8_t register_to_get)
 {
 	uint8_t register_get;
@@ -145,4 +143,47 @@ MPU60x_Available mpu60x_available(void)
 	}
 	DEBUG_MPU("MPU: %s.\n", mpu_available_table[status]);
 	return status;
-}	
+}
+
+void mpu60x_set_gyro_cfg(void)
+{
+	uint8_t temp = mpu60x_get_register(MPU60x_GYRO_CONFIG_ADDR);
+	temp = 0x00; 
+	mpu60x_set_register(MPU60x_GYRO_CONFIG_ADDR, &temp);
+}
+
+uint16_t mpu60x_get_gyro_z_data(void)
+{
+	uint8_t gyro[2];
+	uint16_t gyroscope_z;
+	
+	gyro[0] = mpu60x_read_register(MPU60x_GYRO_ZOUT_L_ADDR);
+	gyro[1] = mpu60x_read_register(MPU60x_GYRO_ZOUT_H_ADDR);
+	gyroscope_z = (gyro[1] << 8)|gyro[0];
+	
+	return gyroscope_z;
+}
+
+uint16_t mpu60x_get_gyro_y_data(void)
+{
+	uint8_t gyro[2];
+	uint16_t gyroscope_y;
+	
+	gyro[0] = mpu60x_read_register(MPU60x_GYRO_YOUT_L_ADDR);
+	gyro[1] = mpu60x_read_register(MPU60x_GYRO_YOUT_H_ADDR);
+	gyroscope_y = (gyro[1] << 8)|gyro[0];
+	
+	return gyroscope_y;
+}
+
+uint16_t mpu60x_get_gyro_x_data(void)
+{
+	uint8_t gyro[2];
+	uint16_t gyroscope_x;
+	
+	gyro[0] = mpu60x_read_register(MPU60x_GYRO_XOUT_L_ADDR);
+	gyro[1] = mpu60x_read_register(MPU60x_GYRO_XOUT_H_ADDR);
+	gyroscope_x = (gyro[1] << 8)|gyro[0];
+	
+	return gyroscope_x;
+}

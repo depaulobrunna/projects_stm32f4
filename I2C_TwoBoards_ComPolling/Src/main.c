@@ -8,7 +8,7 @@
 #define REGISTERS_NUM        118
 	
 static void SystemClock_Config(void);
-static void Error_Handler(void);
+//static void Error_Handler(void);
 
 static void i2c_init(void);
 static void get_all_registers(uint8_t *vector);
@@ -16,16 +16,16 @@ static void get_all_registers(uint8_t *vector);
 const char* const hal_status_table[] = {"OK", "ERROR", "BUSY", "TIMEOUT"};
 
 static I2C_HandleTypeDef I2cHandle;
-static MPU60x_States mpu_state;
-static MPU60x_Available mpu_available;
+//static MPU60x_States mpu_state;
+//static MPU60x_Available mpu_available;
 
-static float test;
-static uint8_t aTxBuffer;
+static uint16_t test;
+//static uint8_t aTxBuffer;
 static uint8_t aRxBuffer[REGISTERS_NUM];
 static uint8_t all[REGISTERS_NUM];
 
-static uint8_t sample_rate_div = 0xFF;
-static uint8_t dlpf = 0x01;
+//static uint8_t sample_rate_div = 0xFF;
+//static uint8_t dlpf = 0x01;
 
 int main(void)
 {    
@@ -41,15 +41,12 @@ int main(void)
 	
 	mpu60x_available();
 	mpu60x_wake();
-	mpu60x_temperature_sensor_enable();
-	mpu60x_set_sample_rate(sample_rate_div, dlpf);
+	mpu60x_set_gyro_cfg();
 	
 	while (1)
-	{ 
-		//test = (((0.56f) * mpu60x_get_temperature()) - 17.78f);
-		//test = mpu60x_get_temperature();
-		test = mpu60x_get_temperature();
-		PRINTS("temperature: %4.2f.\n", test);
+	{
+		test = mpu60x_get_gyro_z_data();
+		PRINTS("axisz: %d.\n", test);
 		HAL_Delay(1000);
 	}
 }
@@ -61,11 +58,6 @@ static void get_all_registers(uint8_t *vector)
 		PRINTS("Getting register %d: ", i);
 		vector[i] = mpu60x_read_register(i);
 	}
-}
-
-static void Error_Handler(void)
-{
-  while(1);
 }
 
 static void i2c_init(void)
@@ -121,8 +113,13 @@ static void SystemClock_Config(void)
   }
 }
 
-void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle)
-{
-  /* Turn LED5 on: Transfer error in reception/transmission process */
-//  BSP_LED_On(LED5); 
-}
+//void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle)
+//{
+//  /* Turn LED5 on: Transfer error in reception/transmission process */
+////  BSP_LED_On(LED5); 
+//}
+
+//static void Error_Handler(void)
+//{
+//  while(1);
+//}

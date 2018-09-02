@@ -28,4 +28,6 @@ void mpu60x_wake(void);
 void mpu60x_temperature_sensor_disable(void);
 void mpu60x_temperature_sensor_enable(void);
 float mpu60x_get_temperature(void);
+void mpu60x_set_gyro_cfg(void);
+uint16_t mpu60x_get_gyro_z_data(void);
 #endif
