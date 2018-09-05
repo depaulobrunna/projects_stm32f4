@@ -15,7 +15,6 @@ const char* const mpu_available_table[] = {"Not available", "available"};
 static I2C_HandleTypeDef *mpu60x_i2c;
 
 static uint8_t mpu60x_get_register(uint8_t register_to_get, uint8_t size);
-static uint16_t mpu60x_get_2bytes_register(uint16_t address);
 static void mpu60x_set_register(uint8_t register_to_set, uint8_t *value_to_set);
 static void mpu60x_set_sample_rate_div(uint8_t sample_rate_div);
 static void mpu60x_set_dlpf(uint8_t dlpf);
@@ -29,7 +28,7 @@ static uint16_t mpu60x_get_accel_axis(MPU60x_Axis axis);
 static float mpu60x_get_temperature(void);
 
 
-static uint8_t mpu60x_get_register(uint8_t register_to_get, uint8_t size)
+static uint_t mpu60x_get_register(uint8_t register_to_get, uint8_t size)
 {
 	uint8_t register_get;
 	HAL_StatusTypeDef status;
@@ -37,16 +36,7 @@ static uint8_t mpu60x_get_register(uint8_t register_to_get, uint8_t size)
 	status = HAL_I2C_Mem_Read(mpu60x_i2c,(uint16_t)MPU60x_I2C_DEVICE_ADDRESS << 1,
 		register_to_get, I2C_MEMADD_SIZE_8BIT, &register_get, size, 1000);
 	
-	DEBUG_MPU("HAL status: %s, in file %s at function %s() in line %i - ",
-			hal_status_table[status], __FILE__, __FUNCTION__, __LINE__);
-	DEBUG_MPU("HAL I2C error code: 0x%02X.\n",(uint8_t)mpu60x_i2c->ErrorCode);
-	
 	return register_get; 
-}
-
-static uint16_t mpu60x_get_2bytes_register(uint16_t address)
-{
-	return mpu60x_get_register(address, 2);
 }
 
 static void mpu60x_set_register(uint8_t register_to_set, uint8_t *value_to_set)
@@ -115,23 +105,18 @@ static uint16_t mpu60x_get_gyro_axis(MPU60x_Axis axis)
 {
 	uint16_t gyroscope;
 	mpu60x_set_gyro_cfg();
-	switch(axis)
+	
+	if(axis == MPU60x_X_AXIS)
 	{
-		case(MPU60x_X_AXIS):
-		{
-			gyroscope = mpu60x_get_2bytes_register(MPU60x_GYRO_XOUT_H_ADDR);
-			
-		}
-		case(MPU60x_Y_AXIS):
-		{
-			gyroscope = mpu60x_get_2bytes_register(MPU60x_GYRO_YOUT_H_ADDR);
-			break;
-		}
-		case(MPU60x_Z_AXIS):
-		{
-			gyroscope = mpu60x_get_2bytes_register(MPU60x_GYRO_ZOUT_H_ADDR);
-			break;
-		}
+		gyroscope = mpu60x_get_register(MPU60x_GYRO_XOUT_H_ADDR, 2);
+	}
+	if(axis == MPU60x_Y_AXIS)
+	{
+		gyroscope = mpu60x_get_register(MPU60x_GYRO_YOUT_H_ADDR, 2);
+	}
+	if(axis == MPU60x_Z_AXIS)
+	{
+		gyroscope = mpu60x_get_register(MPU60x_GYRO_ZOUT_H_ADDR, 2);
 	}
 	return ((gyroscope & 0xFF00) >> 8)|((gyroscope & 0x00FF) << 8);
 }
@@ -141,23 +126,17 @@ static uint16_t mpu60x_get_accel_axis(MPU60x_Axis axis)
 	uint16_t accelerometer;
 	mpu60x_set_accel_cfg();
 	
-	switch(axis)
+	if(axis == MPU60x_X_AXIS)
 	{
-		case(MPU60x_X_AXIS):
-		{
-			accelerometer = mpu60x_get_2bytes_register(MPU60x_ACCEL_XOUT_H_ADDR);
-			
-		}
-		case(MPU60x_Y_AXIS):
-		{
-			accelerometer = mpu60x_get_2bytes_register(MPU60x_ACCEL_YOUT_H_ADDR);
-			break;
-		}
-		case(MPU60x_Z_AXIS):
-		{
-			accelerometer = mpu60x_get_2bytes_register(MPU60x_ACCEL_ZOUT_H_ADDR);
-			break;
-		}
+		accelerometer = mpu60x_get_register(MPU60x_ACCEL_XOUT_H_ADDR, 2);
+	}
+	if(axis == MPU60x_Y_AXIS)
+	{
+		accelerometer = mpu60x_get_register(MPU60x_ACCEL_YOUT_H_ADDR, 2);
+	}
+	if(axis == MPU60x_Z_AXIS)
+	{
+		accelerometer = mpu60x_get_register(MPU60x_ACCEL_ZOUT_H_ADDR, 2);
 	}
 	return ((accelerometer & 0xFF00) >> 8)|((accelerometer & 0x00FF) << 8);
 }
@@ -166,7 +145,7 @@ static float mpu60x_get_temperature(void)
 {
 	uint16_t temperature;
 	
-	temperature = mpu60x_get_2bytes_register(MPU60x_TEMP_OUT_H_ADDR);
+	temperature = mpu60x_get_register(MPU60x_TEMP_OUT_H_ADDR, 2);
 	temperature = ((temperature & 0xFF00) >> 8)|((temperature & 0x00FF) << 8);
 	return (5.0f / 9.0f) * ((((125.0f / 65535.0f) * (float)temperature) - 40.0f) - 32.0f);
 }
@@ -222,9 +201,10 @@ MPU60x_Available mpu60x_available(void)
 	return status;
 }
 
-uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis)
+uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis, uint8_t size)
 {
-	uint16_t data = 0;
+	uint8_t data[size];
+	uint8_t *data_addr &;
 	switch(sensor)
 	{
 		case(MPU60x_GYROSCOPE):

@@ -21,6 +21,7 @@ typedef enum mpu60x_axis_t
 	MPU60x_X_AXIS,
 	MPU60x_Y_AXIS,
 	MPU60x_Z_AXIS,
+	MPU60x_NO_AXIS
 } MPU60x_Axis;
 
 typedef enum mpu60x_sensor_type_t
