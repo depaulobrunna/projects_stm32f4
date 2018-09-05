@@ -19,7 +19,7 @@ static I2C_HandleTypeDef I2cHandle;
 //static MPU60x_States mpu_state;
 //static MPU60x_Available mpu_available;
 
-static uint16_t test;
+uint16_t test;
 //static uint8_t aTxBuffer;
 static uint8_t aRxBuffer[REGISTERS_NUM];
 static uint8_t all[REGISTERS_NUM];
@@ -41,12 +41,11 @@ int main(void)
 	
 	mpu60x_available();
 	mpu60x_wake();
-	mpu60x_set_gyro_cfg();
 	
 	while (1)
 	{
-		test = mpu60x_get_gyro_z_data();
-		PRINTS("axisz: %d.\n", test);
+		test = mpu60x_get_sensor( MPU60x_TEMPERATURE_SENSOR, MPU60x_Z_AXIS);
+		PRINTS("accel axisx: %d.\n", test);
 		HAL_Delay(1000);
 	}
 }

@@ -111,6 +111,10 @@
 #define XG_ST_POS                        7U
 #define XG_ST_MASK                       (1U << XG_ST_POS)
 
+//MPU60x_ACCEL_XOUT
+#define MPU60x_ACCEL_XOUT_H_POS              0U
+#define MPU60x_ACCEL_XOUT_L              8U
+
 //MPU60x_PWR_MGMT_2
 #define CLK_SEL_POS   			             0U
 #define CLK_SEL_MASK   			             (7U << CLK_SEL_POS)

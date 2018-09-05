@@ -14,22 +14,39 @@ const char* const mpu_available_table[] = {"Not available", "available"};
 
 static I2C_HandleTypeDef *mpu60x_i2c;
 
-static uint8_t mpu60x_get_register(uint8_t register_to_get);
+static uint8_t mpu60x_get_register(uint8_t register_to_get, uint8_t size);
+static uint16_t mpu60x_get_2bytes_register(uint16_t address);
 static void mpu60x_set_register(uint8_t register_to_set, uint8_t *value_to_set);
+static void mpu60x_set_sample_rate_div(uint8_t sample_rate_div);
+static void mpu60x_set_dlpf(uint8_t dlpf);
+static void mpu60x_set_sample_rate(uint8_t sample_rate_div, uint8_t dlpf_cfg);
+static void mpu60x_temperature_sensor_enable(void);
+static void mpu60x_temperature_sensor_disable(void);
+static void mpu60x_set_gyro_cfg(void);
+static void mpu60x_set_accel_cfg(void);
+static uint16_t mpu60x_get_gyro_axis(MPU60x_Axis axis);
+static uint16_t mpu60x_get_accel_axis(MPU60x_Axis axis);
+static float mpu60x_get_temperature(void);
 
-static uint8_t mpu60x_get_register(uint8_t register_to_get)
+
+static uint8_t mpu60x_get_register(uint8_t register_to_get, uint8_t size)
 {
 	uint8_t register_get;
 	HAL_StatusTypeDef status;
 		
 	status = HAL_I2C_Mem_Read(mpu60x_i2c,(uint16_t)MPU60x_I2C_DEVICE_ADDRESS << 1,
-		register_to_get, I2C_MEMADD_SIZE_8BIT, &register_get, 1, 1000);
+		register_to_get, I2C_MEMADD_SIZE_8BIT, &register_get, size, 1000);
 	
 	DEBUG_MPU("HAL status: %s, in file %s at function %s() in line %i - ",
 			hal_status_table[status], __FILE__, __FUNCTION__, __LINE__);
 	DEBUG_MPU("HAL I2C error code: 0x%02X.\n",(uint8_t)mpu60x_i2c->ErrorCode);
 	
 	return register_get; 
+}
+
+static uint16_t mpu60x_get_2bytes_register(uint16_t address)
+{
+	return mpu60x_get_register(address, 2);
 }
 
 static void mpu60x_set_register(uint8_t register_to_set, uint8_t *value_to_set)
@@ -54,11 +71,107 @@ static void mpu60x_set_sample_rate_div(uint8_t sample_rate_div)
 }
 static void mpu60x_set_dlpf(uint8_t dlpf)
 {
-	uint8_t temp = mpu60x_get_register(MPU60x_CONFIG_ADDR);
+	uint8_t temp = mpu60x_get_register(MPU60x_CONFIG_ADDR, 1);
 	temp = (temp & ~DLPF_CFG_MASK) | dlpf;
 	mpu60x_write_register(MPU60x_CONFIG_ADDR, &temp);
 }
 
+
+static void mpu60x_set_sample_rate(uint8_t sample_rate_div, uint8_t dlpf_cfg)
+{
+	mpu60x_set_dlpf(dlpf_cfg);
+	mpu60x_set_sample_rate_div(sample_rate_div);
+}
+
+static void mpu60x_temperature_sensor_enable(void)
+{
+	uint8_t temp = mpu60x_get_register(MPU60x_PWR_MGMT_1_ADDR, 1);
+	temp = (temp & ~TEMP_DIS_MASK) | TEMP_ENABLE;
+	mpu60x_set_register(MPU60x_PWR_MGMT_1_ADDR, &temp);
+	return;
+}
+
+static void mpu60x_temperature_sensor_disable(void)
+{
+	uint8_t temp = mpu60x_get_register(MPU60x_PWR_MGMT_1_ADDR, 1);
+	temp = (temp & ~TEMP_DIS_MASK) | TEMP_DISABLE;
+	mpu60x_set_register(MPU60x_PWR_MGMT_1_ADDR, &temp);
+	return;
+}
+
+static void mpu60x_set_gyro_cfg(void)
+{
+	uint8_t temp = 0x00; 
+	mpu60x_set_register(MPU60x_GYRO_CONFIG_ADDR, &temp);
+}
+
+static void mpu60x_set_accel_cfg(void)
+{
+	uint8_t temp = 0x00;
+	mpu60x_set_register(MPU60x_ACCEL_CONFIG_ADDR, &temp);
+}
+
+static uint16_t mpu60x_get_gyro_axis(MPU60x_Axis axis)
+{
+	uint16_t gyroscope;
+	mpu60x_set_gyro_cfg();
+	switch(axis)
+	{
+		case(MPU60x_X_AXIS):
+		{
+			gyroscope = mpu60x_get_2bytes_register(MPU60x_GYRO_XOUT_H_ADDR);
+			
+		}
+		case(MPU60x_Y_AXIS):
+		{
+			gyroscope = mpu60x_get_2bytes_register(MPU60x_GYRO_YOUT_H_ADDR);
+			break;
+		}
+		case(MPU60x_Z_AXIS):
+		{
+			gyroscope = mpu60x_get_2bytes_register(MPU60x_GYRO_ZOUT_H_ADDR);
+			break;
+		}
+	}
+	return ((gyroscope & 0xFF00) >> 8)|((gyroscope & 0x00FF) << 8);
+}
+
+static uint16_t mpu60x_get_accel_axis(MPU60x_Axis axis)
+{
+	uint16_t accelerometer;
+	mpu60x_set_accel_cfg();
+	
+	switch(axis)
+	{
+		case(MPU60x_X_AXIS):
+		{
+			accelerometer = mpu60x_get_2bytes_register(MPU60x_ACCEL_XOUT_H_ADDR);
+			
+		}
+		case(MPU60x_Y_AXIS):
+		{
+			accelerometer = mpu60x_get_2bytes_register(MPU60x_ACCEL_YOUT_H_ADDR);
+			break;
+		}
+		case(MPU60x_Z_AXIS):
+		{
+			accelerometer = mpu60x_get_2bytes_register(MPU60x_ACCEL_ZOUT_H_ADDR);
+			break;
+		}
+	}
+	return ((accelerometer & 0xFF00) >> 8)|((accelerometer & 0x00FF) << 8);
+}
+
+static float mpu60x_get_temperature(void)
+{
+	uint16_t temperature;
+	
+	temperature = mpu60x_get_2bytes_register(MPU60x_TEMP_OUT_H_ADDR);
+	temperature = ((temperature & 0xFF00) >> 8)|((temperature & 0x00FF) << 8);
+	return (5.0f / 9.0f) * ((((125.0f / 65535.0f) * (float)temperature) - 40.0f) - 32.0f);
+}
+
+//------------------------------------------------------------------------------------//
 void mpu60x_set_i2c(I2C_HandleTypeDef *i2c)
 {
 	mpu60x_i2c = i2c;
@@ -67,7 +180,7 @@ void mpu60x_set_i2c(I2C_HandleTypeDef *i2c)
 
 uint8_t mpu60x_read_register(uint8_t register_to_read)
 {
-	return mpu60x_get_register(register_to_read);
+	return mpu60x_get_register(register_to_read, 1);
 }
 
 void mpu60x_write_register(uint8_t register_to_write, uint8_t *value_to_write)
@@ -79,54 +192,18 @@ void mpu60x_write_register(uint8_t register_to_write, uint8_t *value_to_write)
 
 MPU60x_States mpu60x_get_state(void)
 {
-	return (MPU60x_States)((mpu60x_get_register(MPU60x_PWR_MGMT_1_ADDR) & 0xC0) >> SLEEP_POS);
-}
-
-void mpu60x_set_sample_rate(uint8_t sample_rate_div, uint8_t dlpf_cfg)
-{
-	mpu60x_set_dlpf(dlpf_cfg);
-	mpu60x_set_sample_rate_div(sample_rate_div);
-	
-	return;
+	return (MPU60x_States)((mpu60x_get_register(MPU60x_PWR_MGMT_1_ADDR, 1) & 0xC0) >> SLEEP_POS);
 }
 
 void mpu60x_wake(void)
 {
-	uint8_t temp = mpu60x_get_register(MPU60x_PWR_MGMT_1_ADDR);
+	uint8_t temp = mpu60x_get_register(MPU60x_PWR_MGMT_1_ADDR, 1);
 	temp = (temp & ~(SLEEP_MASK|CYCLE_MASK))|(SLEEP_DISABLE|CYCLE_DISABLE);
 	mpu60x_set_register(MPU60x_PWR_MGMT_1_ADDR, &temp);
 	temp = (temp & ~CLK_SEL_MASK)|(0x00 << CLK_SEL_POS);
 	mpu60x_set_register(MPU60x_PWR_MGMT_1_ADDR, &temp);
 	
 	return;
-}
-
-void mpu60x_temperature_sensor_enable(void)
-{
-	uint8_t temp = mpu60x_get_register(MPU60x_PWR_MGMT_1_ADDR);
-	temp = (temp & ~TEMP_DIS_MASK) | TEMP_ENABLE;
-	mpu60x_set_register(MPU60x_PWR_MGMT_1_ADDR, &temp);
-	return;
-}
-
-void mpu60x_temperature_disable(void)
-{
-	uint8_t temp = mpu60x_get_register(MPU60x_PWR_MGMT_1_ADDR);
-	temp = (temp & ~TEMP_DIS_MASK) | TEMP_DISABLE;
-	mpu60x_set_register(MPU60x_PWR_MGMT_1_ADDR, &temp);
-	return;
-}
-
-float mpu60x_get_temperature(void)
-{
-	uint8_t temp[2];
-	uint16_t temperature;
-	
-	temp[0] = mpu60x_read_register(MPU60x_TEMP_OUT_L_ADDR);
-	temp[1] = mpu60x_read_register(MPU60x_TEMP_OUT_H_ADDR);
-	temperature = (temp[1] << 8)|temp[0];
-	
-	return (5.0f / 9.0f) * ((((125.0f / 65535.0f) * (float)temperature) - 40.0f) - 32.0f);
 }
 
 MPU60x_Available mpu60x_available(void)
@@ -145,45 +222,28 @@ MPU60x_Available mpu60x_available(void)
 	return status;
 }
 
-void mpu60x_set_gyro_cfg(void)
+uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis)
 {
-	uint8_t temp = mpu60x_get_register(MPU60x_GYRO_CONFIG_ADDR);
-	temp = 0x00; 
-	mpu60x_set_register(MPU60x_GYRO_CONFIG_ADDR, &temp);
-}
-
-uint16_t mpu60x_get_gyro_z_data(void)
-{
-	uint8_t gyro[2];
-	uint16_t gyroscope_z;
-	
-	gyro[0] = mpu60x_read_register(MPU60x_GYRO_ZOUT_L_ADDR);
-	gyro[1] = mpu60x_read_register(MPU60x_GYRO_ZOUT_H_ADDR);
-	gyroscope_z = (gyro[1] << 8)|gyro[0];
-	
-	return gyroscope_z;
-}
-
-uint16_t mpu60x_get_gyro_y_data(void)
-{
-	uint8_t gyro[2];
-	uint16_t gyroscope_y;
-	
-	gyro[0] = mpu60x_read_register(MPU60x_GYRO_YOUT_L_ADDR);
-	gyro[1] = mpu60x_read_register(MPU60x_GYRO_YOUT_H_ADDR);
-	gyroscope_y = (gyro[1] << 8)|gyro[0];
-	
-	return gyroscope_y;
-}
-
-uint16_t mpu60x_get_gyro_x_data(void)
-{
-	uint8_t gyro[2];
-	uint16_t gyroscope_x;
-	
-	gyro[0] = mpu60x_read_register(MPU60x_GYRO_XOUT_L_ADDR);
-	gyro[1] = mpu60x_read_register(MPU60x_GYRO_XOUT_H_ADDR);
-	gyroscope_x = (gyro[1] << 8)|gyro[0];
-	
-	return gyroscope_x;
+	uint16_t data = 0;
+	switch(sensor)
+	{
+		case(MPU60x_GYROSCOPE):
+		{
+			data = mpu60x_get_gyro_axis(axis);
+			break;
+		}
+		case(MPU60x_ACCELEROMETER):
+		{
+			data = mpu60x_get_accel_axis(axis);
+			break;
+		}
+		case(MPU60x_TEMPERATURE_SENSOR):
+		{
+			mpu60x_set_sample_rate(0xFF, 0x01);
+			mpu60x_temperature_sensor_enable();
+			data =  mpu60x_get_temperature();
+			break;
+		}
+	}
+	return data;
 }

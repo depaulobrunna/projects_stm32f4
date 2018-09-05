@@ -3,11 +3,11 @@
 <title>Static Call Graph - [STM32F4-Discovery\STM32F4-Discovery.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image STM32F4-Discovery\STM32F4-Discovery.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Sun Sep 02 12:52:51 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Wed Sep 05 11:52:41 2018
 <BR><P>
-<H3>Maximum Stack Usage =        168 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        176 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; mpu60x_wake &rArr; mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+main &rArr; mpu60x_get_sensor &rArr; mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 <P>
 <H3>
 Mutually Recursive functions
@@ -596,7 +596,7 @@ Global Symbols
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WaitOnFlagUntilTimeout
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_RequestMemoryRead
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_register
+<BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_register
 </UL>
 
 <P><STRONG><a name="[7b]"></a>HAL_I2C_Mem_Write</STRONG> (Thumb, 306 bytes, Stack size 64 bytes, stm32f4xx_hal_i2c.o(i.HAL_I2C_Mem_Write))
@@ -608,7 +608,7 @@ Global Symbols
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WaitOnBTFFlagUntilTimeout
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_RequestMemoryWrite
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_register
+<BR>[Called By]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_register
 </UL>
 
 <P><STRONG><a name="[74]"></a>HAL_I2C_MspInit</STRONG> (Thumb, 108 bytes, Stack size 40 bytes, stm32f4xx_hal_msp.o(i.HAL_I2C_MspInit))
@@ -808,12 +808,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[5b]"></a>main</STRONG> (Thumb, 86 bytes, Stack size 0 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = main &rArr; mpu60x_wake &rArr; mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = main &rArr; mpu60x_get_sensor &rArr; mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_wake
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_i2c
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_gyro_cfg
-<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_gyro_z_data
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_sensor
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_available
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;debug_print
 <LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;debug_init
@@ -833,27 +832,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a5]"></a>mpu60x_get_gyro_z_data</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, mpu60x.o(i.mpu60x_get_gyro_z_data))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = mpu60x_get_gyro_z_data &rArr; mpu60x_read_register &rArr; mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+<P><STRONG><a name="[a4]"></a>mpu60x_get_sensor</STRONG> (Thumb, 230 bytes, Stack size 16 bytes, mpu60x.o(i.mpu60x_get_sensor))
+<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = mpu60x_get_sensor &rArr; mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_read_register
-</UL>
-<BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[a6]"></a>mpu60x_read_register</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, mpu60x.o(i.mpu60x_read_register))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = mpu60x_read_register &rArr; mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
-</UL>
-<BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_register
-</UL>
-<BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_gyro_z_data
-</UL>
-
-<P><STRONG><a name="[a4]"></a>mpu60x_set_gyro_cfg</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, mpu60x.o(i.mpu60x_set_gyro_cfg))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = mpu60x_set_gyro_cfg &rArr; mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
-</UL>
-<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_register
-<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_register
+<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_write_register
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_register
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_register
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_2bytes_register
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -862,13 +847,21 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a3]"></a>mpu60x_wake</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, mpu60x.o(i.mpu60x_wake))
+<P><STRONG><a name="[a3]"></a>mpu60x_wake</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, mpu60x.o(i.mpu60x_wake))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = mpu60x_wake &rArr; mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_register
-<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_register
+<BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_register
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_register
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[a6]"></a>mpu60x_write_register</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, mpu60x.o(i.mpu60x_write_register))
+<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = mpu60x_write_register &rArr; mpu60x_set_register &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+</UL>
+<BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_register
+</UL>
+<BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_sensor
 </UL>
 <P>
 <H3>
@@ -989,23 +982,27 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a7]"></a>mpu60x_get_register</STRONG> (Thumb, 36 bytes, Stack size 24 bytes, mpu60x.o(i.mpu60x_get_register))
+<P><STRONG><a name="[a8]"></a>mpu60x_get_2bytes_register</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, mpu60x.o(i.mpu60x_get_2bytes_register))
+<BR><BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_sensor
+</UL>
+
+<P><STRONG><a name="[a5]"></a>mpu60x_get_register</STRONG> (Thumb, 36 bytes, Stack size 24 bytes, mpu60x.o(i.mpu60x_get_register))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = mpu60x_get_register &rArr; HAL_I2C_Mem_Read &rArr; I2C_RequestMemoryRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Mem_Read
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_wake
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_gyro_cfg
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_read_register
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_sensor
 </UL>
 
-<P><STRONG><a name="[a8]"></a>mpu60x_set_register</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, mpu60x.o(i.mpu60x_set_register))
+<P><STRONG><a name="[a7]"></a>mpu60x_set_register</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, mpu60x.o(i.mpu60x_set_register))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = mpu60x_set_register &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Mem_Write
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_wake
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_set_gyro_cfg
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_get_sensor
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu60x_write_register
 </UL>
 
 <P><STRONG><a name="[97]"></a>_fp_digits</STRONG> (Thumb, 366 bytes, Stack size 64 bytes, printfa.o(i._fp_digits), UNUSED)
