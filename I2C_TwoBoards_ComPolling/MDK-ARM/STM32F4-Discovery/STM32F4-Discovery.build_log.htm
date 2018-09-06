@@ -34,24 +34,28 @@ compiling mpu60x.c...
   	HAL_StatusTypeDef status;
 ..\Src\mpu60x.c(44): warning:  #550-D: variable "status"  was set but never used
   	HAL_StatusTypeDef status;
-..\Src\mpu60x.c(204): error:  #147-D: declaration is incompatible with "uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type, MPU60x_Axis)"  (declared at line 41 of "..\Inc\mpu60x.h")
+..\Src\mpu60x.c(223): error:  #147-D: declaration is incompatible with "uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type, MPU60x_Axis)"  (declared at line 41 of "..\Inc\mpu60x.h")
   uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis, uint8_t size)
-..\Src\mpu60x.c(207): error:  #65: expected a ";"
+..\Src\mpu60x.c(226): error:  #65: expected a ";"
   	uint8_t *data_addr &;
-..\Src\mpu60x.c(212): error:  #137: expression must be a modifiable lvalue
+..\Src\mpu60x.c(231): error:  #137: expression must be a modifiable lvalue
   			data = mpu60x_get_gyro_axis(axis);
-..\Src\mpu60x.c(217): error:  #137: expression must be a modifiable lvalue
+..\Src\mpu60x.c(236): error:  #137: expression must be a modifiable lvalue
   			data = mpu60x_get_accel_axis(axis);
-..\Src\mpu60x.c(224): error:  #137: expression must be a modifiable lvalue
+..\Src\mpu60x.c(243): error:  #137: expression must be a modifiable lvalue
   			data =  mpu60x_get_temperature();
-..\Src\mpu60x.c(228): error:  #120: return value type does not match the function type
+..\Src\mpu60x.c(247): error:  #120: return value type does not match the function type
   	return data;
-..\Src\mpu60x.c(207): warning:  #177-D: variable "data_addr"  was declared but never referenced
+..\Src\mpu60x.c(226): warning:  #177-D: variable "data_addr"  was declared but never referenced
   	uint8_t *data_addr &;
 ..\Src\mpu60x.c(84): warning:  #177-D: function "mpu60x_temperature_sensor_disable"  was declared but never referenced
   static void mpu60x_temperature_sensor_disable(void)
 ..\Src\mpu60x.c: 4 warnings, 7 errors
-"STM32F4-Discovery\STM32F4-Discovery.axf" - 7 Error(s), 4 Warning(s).
+compiling main.c...
+..\Src\main.c(53): warning:  #177-D: function "get_all_registers"  was declared but never referenced
+  static void get_all_registers(uint8_t *vector)
+..\Src\main.c: 1 warning, 0 errors
+"STM32F4-Discovery\STM32F4-Discovery.axf" - 7 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -75,7 +79,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.0.1
 Target not created.
-Build Time Elapsed:  00:00:07
+Build Time Elapsed:  00:00:12
 </pre>
 </body>
 </html>

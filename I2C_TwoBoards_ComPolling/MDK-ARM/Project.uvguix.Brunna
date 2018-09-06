@@ -3525,16 +3525,16 @@
       </Doc>
       <Doc>
         <Name>..\Src\mpu60x.c</Name>
-        <ColumnNumber>84</ColumnNumber>
-        <TopLine>111</TopLine>
-        <CurrentLine>204</CurrentLine>
+        <ColumnNumber>3</ColumnNumber>
+        <TopLine>99</TopLine>
+        <CurrentLine>130</CurrentLine>
         <Folding>1</Folding>
-        <ContractedFolders>42,56,62,70,76,84,92,98,154,160,165,172,177,188</ContractedFolders>
+        <ContractedFolders>42,56,62,70,76,84,92,98,173,179,184,191,196,207</ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
         <Name>..\Inc\mpu60x.h</Name>
-        <ColumnNumber>2</ColumnNumber>
+        <ColumnNumber>15</ColumnNumber>
         <TopLine>1</TopLine>
         <CurrentLine>24</CurrentLine>
         <Folding>1</Folding>

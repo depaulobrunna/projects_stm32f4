@@ -106,17 +106,27 @@ static uint16_t mpu60x_get_gyro_axis(MPU60x_Axis axis)
 	uint16_t gyroscope;
 	mpu60x_set_gyro_cfg();
 	
-	if(axis == MPU60x_X_AXIS)
+	switch (axis)
 	{
-		gyroscope = mpu60x_get_register(MPU60x_GYRO_XOUT_H_ADDR, 2);
-	}
-	if(axis == MPU60x_Y_AXIS)
-	{
-		gyroscope = mpu60x_get_register(MPU60x_GYRO_YOUT_H_ADDR, 2);
-	}
-	if(axis == MPU60x_Z_AXIS)
-	{
-		gyroscope = mpu60x_get_register(MPU60x_GYRO_ZOUT_H_ADDR, 2);
+		case (MPU60x_X_AXIS):
+		{
+			gyroscope = mpu60x_get_register(MPU60x_GYRO_XOUT_H_ADDR, 2);
+			break;
+		}
+		case (MPU60x_Y_AXIS):
+		{
+			gyroscope = mpu60x_get_register(MPU60x_GYRO_YOUT_H_ADDR, 2);
+			break;
+		}
+		case(MPU60x_Z_AXIS):
+		{
+			gyroscope = mpu60x_get_register(MPU60x_GYRO_ZOUT_H_ADDR, 2);
+			break;
+		}
+		case(MPU60x_NO_AXIS):
+		{
+			break;
+		}
 	}
 	return ((gyroscope & 0xFF00) >> 8)|((gyroscope & 0x00FF) << 8);
 }
@@ -125,18 +135,27 @@ static uint16_t mpu60x_get_accel_axis(MPU60x_Axis axis)
 {
 	uint16_t accelerometer;
 	mpu60x_set_accel_cfg();
-	
-	if(axis == MPU60x_X_AXIS)
+	switch (axis)
 	{
-		accelerometer = mpu60x_get_register(MPU60x_ACCEL_XOUT_H_ADDR, 2);
-	}
-	if(axis == MPU60x_Y_AXIS)
-	{
-		accelerometer = mpu60x_get_register(MPU60x_ACCEL_YOUT_H_ADDR, 2);
-	}
-	if(axis == MPU60x_Z_AXIS)
-	{
-		accelerometer = mpu60x_get_register(MPU60x_ACCEL_ZOUT_H_ADDR, 2);
+		case (MPU60x_X_AXIS):
+		{
+			accelerometer = mpu60x_get_register(MPU60x_ACCEL_XOUT_H_ADDR, 2);
+			break;
+		}
+		case (MPU60x_Y_AXIS):
+		{
+			accelerometer = mpu60x_get_register(MPU60x_ACCEL_YOUT_H_ADDR, 2);
+			break;
+		}
+		case(MPU60x_Z_AXIS):
+		{
+			accelerometer = mpu60x_get_register(MPU60x_ACCEL_ZOUT_H_ADDR, 2);
+			break;
+		}
+		case(MPU60x_NO_AXIS):
+		{
+			break;
+		}
 	}
 	return ((accelerometer & 0xFF00) >> 8)|((accelerometer & 0x00FF) << 8);
 }
