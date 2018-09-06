@@ -28,34 +28,78 @@ Project File Date:  08/27/2018
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'STM32F4-Discovery'
 compiling mpu60x.c...
-..\Src\mpu60x.c(31): error:  #20: identifier "uint_t" is undefined
-  static uint_t mpu60x_get_register(uint8_t register_to_get, uint8_t size)
+..\Src\mpu60x.c(25): warning:  #550-D: variable "status"  was set but never used
+  	HAL_StatusTypeDef status;
 ..\Src\mpu60x.c(34): warning:  #550-D: variable "status"  was set but never used
   	HAL_StatusTypeDef status;
-..\Src\mpu60x.c(44): warning:  #550-D: variable "status"  was set but never used
-  	HAL_StatusTypeDef status;
-..\Src\mpu60x.c(223): error:  #147-D: declaration is incompatible with "uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type, MPU60x_Axis)"  (declared at line 41 of "..\Inc\mpu60x.h")
-  uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis, uint8_t size)
-..\Src\mpu60x.c(226): error:  #65: expected a ";"
-  	uint8_t *data_addr &;
-..\Src\mpu60x.c(231): error:  #137: expression must be a modifiable lvalue
-  			data = mpu60x_get_gyro_axis(axis);
-..\Src\mpu60x.c(236): error:  #137: expression must be a modifiable lvalue
-  			data = mpu60x_get_accel_axis(axis);
-..\Src\mpu60x.c(243): error:  #137: expression must be a modifiable lvalue
-  			data =  mpu60x_get_temperature();
-..\Src\mpu60x.c(247): error:  #120: return value type does not match the function type
+..\Src\mpu60x.c(50): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
+  	uint8_t temp = mpu60x_get_register(
+PU60x_CONFIG_ADDR, 1);
+..\Src\mpu60x.c(50): error:  #165: too few arguments in function call
+  	uint8_t temp = mpu60x_get_register(
+PU60x_CONFIG_ADDR, 1);
+..\Src\mpu60x.c(50): error:  #144: a value of type "void" cannot be used to initialize an entity of type "uint8_t"
+  	uint8_t temp = mpu60x_get_register(
+PU60x_CONFIG_ADDR, 1);
+..\Src\mpu60x.c(64): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
+  	uint8_t temp = mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1);
+..\Src\mpu60x.c(64): error:  #165: too few arguments in function call
+  	uint8_t temp = mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1);
+..\Src\mpu60x.c(64): error:  #144: a value of type "void" cannot be used to initialize an entity of type "uint8_t"
+  	uint8_t temp = mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1);
+..\Src\mpu60x.c(72): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
+  	uint8_t temp = mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1);
+..\Src\mpu60x.c(72): error:  #165: too few arguments in function call
+  	uint8_t temp = mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1);
+..\Src\mpu60x.c(72): error:  #144: a value of type "void" cannot be used to initialize an entity of type "uint8_t"
+  	uint8_t temp = mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1);
+..\Src\mpu60x.c(149): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
+  	temperature = mpu60x_get_register(
+PU60x_TEMP_OUT_H_ADDR, 2);
+..\Src\mpu60x.c(149): error:  #165: too few arguments in function call
+  	temperature = mpu60x_get_register(
+PU60x_TEMP_OUT_H_ADDR, 2);
+..\Src\mpu60x.c(149): error:  #513: a value of type "void" cannot be assigned to an entity of type "uint16_t"
+  	temperature = mpu60x_get_register(
+PU60x_TEMP_OUT_H_ADDR, 2);
+..\Src\mpu60x.c(163): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
+  	return mpu60x_get_register(register_to_read, 1);
+..\Src\mpu60x.c(163): error:  #165: too few arguments in function call
+  	return mpu60x_get_register(register_to_read, 1);
+..\Src\mpu60x.c(163): error:  #120: return value type does not match the function type
+  	return mpu60x_get_register(register_to_read, 1);
+..\Src\mpu60x.c(175): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
+  	return (MPU60x_States)((mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1) & 0xC0) >> SLEEP_POS);
+..\Src\mpu60x.c(175): error:  #165: too few arguments in function call
+  	return (MPU60x_States)((mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1) & 0xC0) >> SLEEP_POS);
+..\Src\mpu60x.c(175): error:  #31: expression must have integral type
+  	return (MPU60x_States)((mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1) & 0xC0) >> SLEEP_POS);
+..\Src\mpu60x.c(180): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
+  	uint8_t temp = mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1);
+..\Src\mpu60x.c(180): error:  #165: too few arguments in function call
+  	uint8_t temp = mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1);
+..\Src\mpu60x.c(180): error:  #144: a value of type "void" cannot be used to initialize an entity of type "uint8_t"
+  	uint8_t temp = mpu60x_get_register(
+PU60x_PWR_MGMT_1_ADDR, 1);
+..\Src\mpu60x.c(201): warning:  #223-D: function "DEBUG_MPU" declared implicitly
+  	DEBUG_MPU("MPU: %s.\n", mpu_available_table[status]);
+..\Src\mpu60x.c(229): error:  #120: return value type does not match the function type
   	return data;
-..\Src\mpu60x.c(226): warning:  #177-D: variable "data_addr"  was declared but never referenced
-  	uint8_t *data_addr &;
-..\Src\mpu60x.c(84): warning:  #177-D: function "mpu60x_temperature_sensor_disable"  was declared but never referenced
+..\Src\mpu60x.c(70): warning:  #177-D: function "mpu60x_temperature_sensor_disable"  was declared but never referenced
   static void mpu60x_temperature_sensor_disable(void)
-..\Src\mpu60x.c: 4 warnings, 7 errors
-compiling main.c...
-..\Src\main.c(53): warning:  #177-D: function "get_all_registers"  was declared but never referenced
-  static void get_all_registers(uint8_t *vector)
-..\Src\main.c: 1 warning, 0 errors
-"STM32F4-Discovery\STM32F4-Discovery.axf" - 7 Error(s), 5 Warning(s).
+..\Src\mpu60x.c: 4 warnings, 22 errors
+"STM32F4-Discovery\STM32F4-Discovery.axf" - 22 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -79,7 +123,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.0.1
 Target not created.
-Build Time Elapsed:  00:00:12
+Build Time Elapsed:  00:00:08
 </pre>
 </body>
 </html>
