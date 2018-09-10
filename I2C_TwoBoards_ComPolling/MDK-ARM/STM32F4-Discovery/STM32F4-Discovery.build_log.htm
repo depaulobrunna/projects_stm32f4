@@ -32,74 +32,19 @@ compiling mpu60x.c...
   	HAL_StatusTypeDef status;
 ..\Src\mpu60x.c(34): warning:  #550-D: variable "status"  was set but never used
   	HAL_StatusTypeDef status;
-..\Src\mpu60x.c(50): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
-  	uint8_t temp = mpu60x_get_register(
-PU60x_CONFIG_ADDR, 1);
-..\Src\mpu60x.c(50): error:  #165: too few arguments in function call
-  	uint8_t temp = mpu60x_get_register(
-PU60x_CONFIG_ADDR, 1);
-..\Src\mpu60x.c(50): error:  #144: a value of type "void" cannot be used to initialize an entity of type "uint8_t"
-  	uint8_t temp = mpu60x_get_register(
-PU60x_CONFIG_ADDR, 1);
-..\Src\mpu60x.c(64): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
-  	uint8_t temp = mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1);
-..\Src\mpu60x.c(64): error:  #165: too few arguments in function call
-  	uint8_t temp = mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1);
-..\Src\mpu60x.c(64): error:  #144: a value of type "void" cannot be used to initialize an entity of type "uint8_t"
-  	uint8_t temp = mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1);
-..\Src\mpu60x.c(72): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
-  	uint8_t temp = mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1);
-..\Src\mpu60x.c(72): error:  #165: too few arguments in function call
-  	uint8_t temp = mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1);
-..\Src\mpu60x.c(72): error:  #144: a value of type "void" cannot be used to initialize an entity of type "uint8_t"
-  	uint8_t temp = mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1);
-..\Src\mpu60x.c(149): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
+..\Src\mpu60x.c(167): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
   	temperature = mpu60x_get_register(
 PU60x_TEMP_OUT_H_ADDR, 2);
-..\Src\mpu60x.c(149): error:  #165: too few arguments in function call
+..\Src\mpu60x.c(167): error:  #165: too few arguments in function call
   	temperature = mpu60x_get_register(
 PU60x_TEMP_OUT_H_ADDR, 2);
-..\Src\mpu60x.c(149): error:  #513: a value of type "void" cannot be assigned to an entity of type "uint16_t"
+..\Src\mpu60x.c(167): error:  #513: a value of type "void" cannot be assigned to an entity of type "uint16_t"
   	temperature = mpu60x_get_register(
 PU60x_TEMP_OUT_H_ADDR, 2);
-..\Src\mpu60x.c(163): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
-  	return mpu60x_get_register(register_to_read, 1);
-..\Src\mpu60x.c(163): error:  #165: too few arguments in function call
-  	return mpu60x_get_register(register_to_read, 1);
-..\Src\mpu60x.c(163): error:  #120: return value type does not match the function type
-  	return mpu60x_get_register(register_to_read, 1);
-..\Src\mpu60x.c(175): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
-  	return (MPU60x_States)((mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1) & 0xC0) >> SLEEP_POS);
-..\Src\mpu60x.c(175): error:  #165: too few arguments in function call
-  	return (MPU60x_States)((mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1) & 0xC0) >> SLEEP_POS);
-..\Src\mpu60x.c(175): error:  #31: expression must have integral type
-  	return (MPU60x_States)((mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1) & 0xC0) >> SLEEP_POS);
-..\Src\mpu60x.c(180): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
-  	uint8_t temp = mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1);
-..\Src\mpu60x.c(180): error:  #165: too few arguments in function call
-  	uint8_t temp = mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1);
-..\Src\mpu60x.c(180): error:  #144: a value of type "void" cannot be used to initialize an entity of type "uint8_t"
-  	uint8_t temp = mpu60x_get_register(
-PU60x_PWR_MGMT_1_ADDR, 1);
-..\Src\mpu60x.c(201): warning:  #223-D: function "DEBUG_MPU" declared implicitly
-  	DEBUG_MPU("MPU: %s.\n", mpu_available_table[status]);
-..\Src\mpu60x.c(229): error:  #120: return value type does not match the function type
-  	return data;
-..\Src\mpu60x.c(70): warning:  #177-D: function "mpu60x_temperature_sensor_disable"  was declared but never referenced
+..\Src\mpu60x.c(72): warning:  #177-D: function "mpu60x_temperature_sensor_disable"  was declared but never referenced
   static void mpu60x_temperature_sensor_disable(void)
-..\Src\mpu60x.c: 4 warnings, 22 errors
-"STM32F4-Discovery\STM32F4-Discovery.axf" - 22 Error(s), 4 Warning(s).
+..\Src\mpu60x.c: 3 warnings, 3 errors
+"STM32F4-Discovery\STM32F4-Discovery.axf" - 3 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -123,7 +68,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.0.1
 Target not created.
-Build Time Elapsed:  00:00:08
+Build Time Elapsed:  00:00:09
 </pre>
 </body>
 </html>
