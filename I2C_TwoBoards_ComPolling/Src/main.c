@@ -19,7 +19,7 @@ static I2C_HandleTypeDef I2cHandle;
 //static MPU60x_States mpu_state;
 //static MPU60x_Available mpu_available;
 
-uint16_t test;
+float test;
 //static uint8_t aTxBuffer;
 static uint8_t aRxBuffer[REGISTERS_NUM];
 static uint8_t all[REGISTERS_NUM];
@@ -44,9 +44,12 @@ int main(void)
 	
 	while (1)
 	{
+		test = 0.0f;
 		test = mpu60x_get_sensor( MPU60x_TEMPERATURE_SENSOR, MPU60x_NO_AXIS);
+		test = (5.0f / 9.0f) * (test - 32.0f);
 		PRINTS("temperature: %f.\n", test);
 		HAL_Delay(1000);
+		
 	}
 }
 

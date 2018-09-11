@@ -2,6 +2,8 @@
 #include "main.h"
 #include "mpu60x_registers.h"
 
+#define bit_to_temp_convert(bit)			(((125.0f / 65535.0f) * bit) - 40.0f)
+
 const char* const mpu_available_table[] = {"Not available", "available"};
 
 static I2C_HandleTypeDef *mpu60x_i2c;
@@ -227,7 +229,7 @@ MPU60x_Available mpu60x_available(void)
 float mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis)
 {
 	uint8_t data[2];
-	uint16_t temp;
+	uint16_t temp = 0;
 	uint8_t *data_addr = &data[0];
 	switch(sensor)
 	{
@@ -248,9 +250,9 @@ float mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis)
 			mpu60x_set_sample_rate(0xFF, 0x01);
 			mpu60x_temperature_sensor_enable();
 			mpu60x_get_temperature(data_addr);
-			temp = ((data[0] << 8)|data[1]);
+			temp = (float)((data[0] << 8)|data[1]);
 			break;
 		}
 	}
-	return temp;
+	return bit_to_temp_convert(temp);
 }
