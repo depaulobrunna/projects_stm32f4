@@ -38,5 +38,5 @@ void mpu60x_write_register(uint8_t register_to_write, uint8_t *value_to_write);
 MPU60x_States mpu60x_get_state(void);
 void mpu60x_wake(void);
 MPU60x_Available mpu60x_available(void);
-uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis);
+float mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis);
 #endif

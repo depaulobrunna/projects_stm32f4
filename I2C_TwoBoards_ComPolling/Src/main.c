@@ -45,7 +45,7 @@ int main(void)
 	while (1)
 	{
 		test = mpu60x_get_sensor( MPU60x_TEMPERATURE_SENSOR, MPU60x_NO_AXIS);
-		PRINTS("accel axisx: %d.\n", test);
+		PRINTS("temperature: %f.\n", test);
 		HAL_Delay(1000);
 	}
 }

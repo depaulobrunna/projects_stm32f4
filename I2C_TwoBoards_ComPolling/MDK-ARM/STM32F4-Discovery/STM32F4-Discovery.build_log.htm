@@ -32,19 +32,12 @@ compiling mpu60x.c...
   	HAL_StatusTypeDef status;
 ..\Src\mpu60x.c(34): warning:  #550-D: variable "status"  was set but never used
   	HAL_StatusTypeDef status;
-..\Src\mpu60x.c(167): error:  #167: argument of type "int" is incompatible with parameter of type "uint8_t *"
-  	temperature = mpu60x_get_register(
-PU60x_TEMP_OUT_H_ADDR, 2);
-..\Src\mpu60x.c(167): error:  #165: too few arguments in function call
-  	temperature = mpu60x_get_register(
-PU60x_TEMP_OUT_H_ADDR, 2);
-..\Src\mpu60x.c(167): error:  #513: a value of type "void" cannot be assigned to an entity of type "uint16_t"
-  	temperature = mpu60x_get_register(
-PU60x_TEMP_OUT_H_ADDR, 2);
 ..\Src\mpu60x.c(72): warning:  #177-D: function "mpu60x_temperature_sensor_disable"  was declared but never referenced
   static void mpu60x_temperature_sensor_disable(void)
-..\Src\mpu60x.c: 3 warnings, 3 errors
-"STM32F4-Discovery\STM32F4-Discovery.axf" - 3 Error(s), 3 Warning(s).
+..\Src\mpu60x.c: 3 warnings, 0 errors
+linking...
+Program Size: Code=10544 RO-data=504 RW-data=24 ZI-data=1664  
+"STM32F4-Discovery\STM32F4-Discovery.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -67,8 +60,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Target not created.
-Build Time Elapsed:  00:00:09
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

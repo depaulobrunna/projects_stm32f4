@@ -17,7 +17,7 @@ static void mpu60x_set_gyro_cfg(void);
 static void mpu60x_set_accel_cfg(void);
 static void mpu60x_get_gyro_axis(MPU60x_Axis axis, uint8_t *gyroscope);
 static void mpu60x_get_accel_axis(MPU60x_Axis axis, uint8_t *accelerometer);
-static float mpu60x_get_temperature(void);
+static void mpu60x_get_temperature(uint8_t *temperature);
 
 
 static void mpu60x_get_register(uint8_t register_to_get, uint8_t *register_get, uint8_t size)
@@ -160,14 +160,13 @@ static void mpu60x_get_accel_axis(MPU60x_Axis axis, uint8_t *accelerometer)
 	}
 }
 
-static float mpu60x_get_temperature(uint8_t *temperature)
+static void mpu60x_get_temperature(uint8_t *temperature)
 {
 	uint8_t temp[10];
 	
 	mpu60x_get_register(MPU60x_TEMP_OUT_H_ADDR, temp, 2);
 	temperature[0] = temp[1];
 	temperature[1] = temp[0];
-	return (5.0f / 9.0f) * ((((125.0f / 65535.0f) * (float)temperature) - 40.0f) - 32.0f);
 }
 
 //------------------------------------------------------------------------------------//
@@ -225,29 +224,33 @@ MPU60x_Available mpu60x_available(void)
 	return status;
 }
 
-uint16_t mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis)
+float mpu60x_get_sensor(MPU60x_Sensor_Type sensor, MPU60x_Axis axis)
 {
 	uint8_t data[2];
+	uint16_t temp;
 	uint8_t *data_addr = &data[0];
 	switch(sensor)
 	{
 		case(MPU60x_GYROSCOPE):
 		{
 			mpu60x_get_gyro_axis(axis, data_addr);
+			temp = ((data[0] << 8)|data[1]);
 			break;
 		}
 		case(MPU60x_ACCELEROMETER):
 		{
 			mpu60x_get_accel_axis(axis, data_addr);
+			temp = ((data[0] << 8)|data[1]);
 			break;
 		}
 		case(MPU60x_TEMPERATURE_SENSOR):
 		{
 			mpu60x_set_sample_rate(0xFF, 0x01);
 			mpu60x_temperature_sensor_enable();
-			data[0] =  mpu60x_get_temperature();
+			mpu60x_get_temperature(data_addr);
+			temp = ((data[0] << 8)|data[1]);
 			break;
 		}
 	}
-	return ((data[0] << 8)|data[1]);
+	return temp;
 }
