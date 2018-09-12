@@ -11,7 +11,6 @@ static void SystemClock_Config(void);
 //static void Error_Handler(void);
 
 static void i2c_init(void);
-static void get_all_registers(uint8_t *vector);
 
 const char* const hal_status_table[] = {"OK", "ERROR", "BUSY", "TIMEOUT"};
 
@@ -19,13 +18,14 @@ static I2C_HandleTypeDef I2cHandle;
 //static MPU60x_States mpu_state;
 //static MPU60x_Available mpu_available;
 
-float test;
+uint16_t test;
+float test_2;
 //static uint8_t aTxBuffer;
 static uint8_t aRxBuffer[REGISTERS_NUM];
 static uint8_t all[REGISTERS_NUM];
 
-//static uint8_t sample_rate_div = 0xFF;
-//static uint8_t dlpf = 0x01;
+static uint8_t sample_rate_div = 0xFF;
+static uint8_t dlpf = 0x01;
 
 int main(void)
 {    
@@ -42,25 +42,22 @@ int main(void)
 	mpu60x_available();
 	mpu60x_wake();
 	
+	mpu60x_temperature_sensor_enable();
+	mpu60x_set_sample_rate( sample_rate_div, dlpf);
+	
 	while (1)
 	{
-		test = 0.0f;
 		test = mpu60x_get_sensor( MPU60x_TEMPERATURE_SENSOR, MPU60x_NO_AXIS);
-		test = (5.0f / 9.0f) * (test - 32.0f);
-		PRINTS("temperature: %f.\n", test);
+		PRINTS("temperature: %d\t", test);
+		test_2 = MPU60x_BYTE_TO_FARHENHEIT(test); 
+		PRINTS("%4.2f\t", test_2);
+		test_2 = MPU60x_FARHENHEIT_TO_CELSIUS(test_2);
+		PRINTS("%4.2f.\n", test_2);
 		HAL_Delay(1000);
 		
 	}
 }
 
-static void get_all_registers(uint8_t *vector)
-{
-	for(uint8_t i = 0; i <= REGISTERS_NUM; i++)
-	{
-		PRINTS("Getting register %d: ", i);
-		vector[i] = mpu60x_read_register(i);
-	}
-}
 
 static void i2c_init(void)
 {

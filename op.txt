@@ -1,0 +1,1 @@
+return (5.0f / 9.0f) * ((((125.0f / 65535.0f) * (float)temperature) - 40.0f) - 32.0f);
