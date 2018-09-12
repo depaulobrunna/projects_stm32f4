@@ -178,17 +178,15 @@ MPU60x_Available mpu60x_available(void)
 	return status;
 }
 
-void mpu60x_set_gyro_cfg(void)
-{
-	uint8_t temp = 0x00; 
-	mpu60x_set_register(MPU60x_GYRO_CONFIG_ADDR, &temp);
+void mpu60x_set_gyro_cfg(MPU60x_Gyroscope_Range range)
+{ 
+	mpu60x_set_register(MPU60x_GYRO_CONFIG_ADDR, (uint8_t *)&range);
 	return;
 }
 
-void mpu60x_set_accel_cfg(void)
+void mpu60x_set_accel_cfg(MPU60x_Accelerometer_Range range)
 {
-	uint8_t temp = 0x00;
-	mpu60x_set_register(MPU60x_ACCEL_CONFIG_ADDR, &temp);
+	mpu60x_set_register(MPU60x_ACCEL_CONFIG_ADDR, (uint8_t *)&range);
 	return;
 }
 

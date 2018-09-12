@@ -24,8 +24,9 @@ float test_2;
 static uint8_t aRxBuffer[REGISTERS_NUM];
 static uint8_t all[REGISTERS_NUM];
 
-static uint8_t sample_rate_div = 0xFF;
-static uint8_t dlpf = 0x01;
+static uint16_t range = MPU60x_ACC_RANGE_ENCODE(MPU60x_RANGE_2_G);
+//static uint8_t sample_rate_div = 0xFF;
+//static uint8_t dlpf = 0x01;
 
 int main(void)
 {    
@@ -42,11 +43,14 @@ int main(void)
 	mpu60x_available();
 	mpu60x_wake();
 	
-	mpu60x_temperature_sensor_enable();
-	mpu60x_set_sample_rate( sample_rate_div, dlpf);
+	mpu60x_set_accel_cfg(MPU60x_RANGE_2_G);
+		
+//	mpu60x_temperature_sensor_enable();
+//	mpu60x_set_sample_rate( sample_rate_div, dlpf);
 	
 	while (1)
 	{
+	#if 0	
 		test = mpu60x_get_sensor( MPU60x_TEMPERATURE_SENSOR, MPU60x_NO_AXIS);
 		PRINTS("temperature: %d\t", test);
 		test_2 = MPU60x_BYTE_TO_FARHENHEIT(test); 
@@ -54,7 +58,18 @@ int main(void)
 		test_2 = MPU60x_FARHENHEIT_TO_CELSIUS(test_2);
 		PRINTS("%4.2f.\n", test_2);
 		HAL_Delay(1000);
+	#elseif 0
+		test = mpu60x_get_sensor(MPU60x_ACCELEROMETER, MPU60x_Z_AXIS);
+		PRINTS("accelaration: %d\t", test);
+		test_2 = MPU60x_BYTE_TO_G(range, test);
+		PRINTS("%4.2f\t", test_2);
+		test_2 = MPU60x_G_TO_SI(test_2);
+		PRINTS("%4.2f.\n", test_2);
+		HAL_Delay(1000);
 		
+	#else
+		
+	#endif
 	}
 }
 
